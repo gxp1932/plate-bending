@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% block title %}Minor{% endblock %}
+
+{% block content %}
+<form method="POST">
+    <h3 align="center">Steel Plate Design in Minor Axis Bending</h3>
+    <img
+            style="float: right; margin-right: 10px; margin-bottom: 10px; margin-top: 10px;"
+  src="/static/images/minor_axis_image.jpg"
+  alt="Minor Axis Bending Figure"
+  width="700"
+  height="450" />
+    <div class="form-group">
+        <label for="thickness">Plate Thickness (in.)</label>
+        <input
+            type="number"
+            style="width: 200px"
+            class="form-control"
+            id="thickness"
+            name="thickness"
+            placeholder="(in.)"
+        />
+    </div>
+     <div class="form-group">
+        <label for="depth">Plate Depth (in.)</label>
+        <input
+            type="number"
+            style="width: 200px"
+            class="form-control"
+            id="depth"
+            name="depth"
+            placeholder="(in.)"
+        />
+    </div>
+    <div class="form-group">
+        <label for="length">Plate Length (in.)</label>
+        <input
+            type="number"
+            style="width: 200px"
+            class="form-control"
+            id="length"
+            name="length"
+            placeholder="(in.)"
+        />
+    </div>
+        <div class="form-group">
+        <label for="eccentricity">Load Eccentricity (in.)</label>
+        <input
+            type="number"
+            style="width: 200px"
+            class="form-control"
+            id="eccentricity"
+            name="eccentricity"
+            placeholder="(in.)"
+        />
+    </div>
+            <div class="form-group">
+        <label for="maxload">Max Applied Load (kip)</label>
+        <input
+            type="number"
+            style="width: 200px"
+            class="form-control"
+            id="maxload"
+            name="maxload"
+            placeholder="(kip)"
+        />
+    </div>
+    <br />
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{% endblock %}
