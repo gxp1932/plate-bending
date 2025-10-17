@@ -2,7 +2,9 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<h1 align="center">Notes</h1>
+<h1 align="center">Steel Plate Bending Design Tool</h1>
+<p align="center">Welcome to the steel plate bending design tool. Analysis is in accordance with AISC Manual of Steel Construction (ASD), Fourteenth Edition, 2011.
+    Please select the Minor or Major options above to begin. Design notes can be saved below. </p>
 <ul class="list-group list-group-flush" id="notes">
     {% for note in user.notes %}
     <li class="list-group-item">

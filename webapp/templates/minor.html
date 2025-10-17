@@ -3,7 +3,8 @@
 
 {% block content %}
 <form method="POST">
-    <h3 align="center">Steel Plate Design in Minor Axis Bending</h3>
+    <h3 align="center">Analysis of Steel Plate in Minor Axis Bending</h3>
+    <p> Reference: AISC Manual of Steel Construction (ASD), Fourteenth Edition, 2011 </p>
     <img
             style="float: right; margin-right: 10px; margin-bottom: 10px; margin-top: 10px;"
   src="/static/images/minor_axis_image.jpg"
@@ -18,7 +19,7 @@
             class="form-control"
             id="thickness"
             name="thickness"
-            placeholder="(in.)"
+            placeholder="t (in.)"
         />
     </div>
      <div class="form-group">
@@ -29,7 +30,7 @@
             class="form-control"
             id="depth"
             name="depth"
-            placeholder="(in.)"
+            placeholder="d (in.)"
         />
     </div>
     <div class="form-group">
@@ -40,7 +41,7 @@
             class="form-control"
             id="length"
             name="length"
-            placeholder="(in.)"
+            placeholder="Lb (in.)"
         />
     </div>
         <div class="form-group">
@@ -51,7 +52,7 @@
             class="form-control"
             id="eccentricity"
             name="eccentricity"
-            placeholder="(in.)"
+            placeholder="e (in.)"
         />
     </div>
             <div class="form-group">
@@ -62,7 +63,7 @@
             class="form-control"
             id="maxload"
             name="maxload"
-            placeholder="(kip)"
+            placeholder="Pmax (kip)"
         />
     </div>
     <br />
