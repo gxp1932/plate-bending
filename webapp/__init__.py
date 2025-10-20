@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from os import path
 from flask_login import LoginManager
 
-#initialize and name database
+#initialize database
 db = SQLAlchemy()
 DB_NAME = 'database.db'
 
@@ -40,6 +40,6 @@ def create_app():
 
 #creates database if it does not already exist
 def create_database(app):
-    if not path.exists('webapp/' + DB_NAME):
+    if not path.exists('instance/' + DB_NAME):
         db.create_all(app=app)
         print('Created Database!')
