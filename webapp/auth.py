@@ -7,6 +7,7 @@ from flask_login import login_user, login_required, logout_user, current_user
 
 auth = Blueprint('auth', __name__)
 
+# Login Route
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -24,16 +25,16 @@ def login():
         else:
             flash('Email Does Not Exist', category='error')
 
-
     return render_template("login.html", user=current_user)
 
-
+# Logout Route
 @auth.route('/logout')
 @login_required
 def logout():
     logout_user()
     return redirect(url_for('auth.login'))
 
+# Register Route
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
@@ -64,6 +65,7 @@ def register():
 
     return render_template("register.html", user=current_user)
 
+# Minor Route
 @auth.route('/minor', methods=['GET', 'POST'])
 def minor():
     if request.method == 'POST':
@@ -98,12 +100,13 @@ def minor():
         Unity = P_max / P_all
 
         if Unity <= 1:
-            flash('Analysis Complete: Pass - Unity = ' + str(Unity.__round__(2)), category='message')
+            flash('Analysis Complete: Pass - Strength Unity = ' + str(Unity.__round__(2)), category='message')
         else:
-            flash('Analysis Complete: Fail - Unity = ' + str(Unity.__round__(2)), category='error')
+            flash('Analysis Complete: Fail - Strength Unity = ' + str(Unity.__round__(2)), category='error')
 
     return render_template("minor.html", user=current_user)
 
+# Major Route
 @auth.route('/major', methods=['GET', 'POST'])
 def major():
     if request.method == 'POST':
@@ -138,7 +141,6 @@ def major():
             Mp = float((Z * Fy) / 12)
             Mn = min(Mp, My_1_6)
 
-
         # Check lateral torsional buckling (AISC F11-2)
         else:
             if Lbd_t2 <= E19_Fy and E08_Fy < Lbd_t2:
@@ -148,19 +150,16 @@ def major():
                     Fcr = float((1.9 * E * Cb) / Lbd_t2)
                     Mn = min((Fcr * S), Mp)
 
-
         # Determine maximum allowable applied load
         P_all = float((Mn / 1.67) / (e / 12))
 
         # Bending Strength Unity Check
         Unity = P_max / P_all
 
-
         if Unity <= 1:
-            flash('Analysis Complete: Pass - Unity = ' + str(Unity.__round__(2)), category='message')
+            flash('Analysis Complete: Pass - Strength Unity = ' + str(Unity.__round__(2)), category='message')
         else:
-            flash('Analysis Complete: Fail - Unity = ' + str(Unity.__round__(2)), category='error')
-
+            flash('Analysis Complete: Fail - Strength Unity = ' + str(Unity.__round__(2)), category='error')
 
     return render_template("major.html", user=current_user)
 

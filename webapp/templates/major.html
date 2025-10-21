@@ -9,13 +9,18 @@
             style="float: right;
             margin-right: 10px;
             margin-bottom: 10px;
-            margin-top: 10px;"
+            margin-top: 0px;"
   src="/static/images/major_axis_image.jpg"
   alt="Major Axis Bending Figure"
   width="800"
   height="450" />
+    <p style="line-height: .4;"> Constants: </p>
+    <p style="line-height: .4;"> Yield Strength: Fy = 36 ksi</p>
+    <p style="line-height: .4;"> Modulus of Elasticity: E = 29,000 ksi</p>
+    <p style="line-height: .4;"> LTB modification factor: Cb = 1.0</p>
+
     <div class="form-group">
-        <label for="thickness">Plate Thickness (in.)</label>
+        <label for="thickness" style="line-height: .4">Plate Thickness (in.)</label>
         <input
             type="number"
             style="width: 200px"
@@ -26,7 +31,7 @@
         />
     </div>
      <div class="form-group">
-        <label for="depth">Plate Depth (in.)</label>
+        <label for="depth" style="line-height: .4">Plate Depth (in.)</label>
         <input
             type="number"
             style="width: 200px"
@@ -37,7 +42,7 @@
         />
     </div>
     <div class="form-group">
-        <label for="length">Plate Length (in.)</label>
+        <label for="length" style="line-height: .4">Plate Length (in.)</label>
         <input
             type="number"
             style="width: 200px"
@@ -48,7 +53,7 @@
         />
     </div>
         <div class="form-group">
-        <label for="eccentricity">Load Eccentricity (in.)</label>
+        <label for="eccentricity" style="line-height: .4">Load Eccentricity (in.)</label>
         <input
             type="number"
             style="width: 200px"
@@ -59,7 +64,7 @@
         />
     </div>
             <div class="form-group">
-        <label for="maxload">Max Applied Load (kip)</label>
+        <label for="maxload" style="line-height: .4">Max Applied Load (kip)</label>
         <input
             type="number"
             style="width: 200px"
@@ -69,7 +74,7 @@
             placeholder="Pmax (kip)"
         />
     </div>
-    <br />
+
     <button type="submit" onclick = "changeContent()" class="btn btn-primary">Submit</button>
 </form>
 {% endblock %}
