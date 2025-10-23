@@ -5,15 +5,39 @@
 <form method="POST">
     <h3 align="center">Analysis of Steel Plate in Minor Axis Bending</h3>
     <p> Reference: AISC Manual of Steel Construction (ASD), Fourteenth Edition, 2011. </p>
+    <hr>
+    <div style="float: right; margin-right: 10px; margin-bottom: 5px; width: 800px;">
     <img
             style="float: right;
-            margin-right: 10px;
-            margin-bottom: 10px;
+            margin-right: 0px;
+            margin-bottom: 0px;
             margin-top: 0px;"
   src="/static/images/minor_axis_image.jpg"
   alt="Minor Axis Bending Figure"
-  width="700"
-  height="450" />
+  width="400"
+  height="325" />
+
+    {% if results %}
+
+    {% if results.error %}
+        <p>{{ results.error }}</p>
+    {% else %}
+        <p style="margin-bottom: 0;"><strong>Results:</strong></p>
+        <ul>
+            <li><strong>Nominal Moment (M<sub>n</sub>):</strong> {{ results.Mn }} kip-ft</li>
+            <li><strong>Allowable Load (P<sub>all</sub>):</strong> {{ results.P_all }} kips</li>
+            <li><strong>Unity Strength:</strong> {{ results.Unity }}</li>
+            <li><strong>Status:</strong>
+                <span style="color: {% if results.Status|trim == 'Pass' %}green{% else %}red{% endif %};
+                              font-weight: bold;">
+                    {{ results.Status }}
+                </span>
+            </li>
+        </ul>
+    {% endif %}
+{% endif %}
+    </div>
+
     <p style="line-height: .4;"> Constants: </p>
     <p style="line-height: .4;"> Yield Strength: Fy = 36 ksi</p>
     <p style="line-height: .4;"> Modulus of Elasticity: E = 29,000 ksi</p>
@@ -75,6 +99,6 @@
         />
     </div>
 
-    <button type="submit" class="btn btn-primary" >Submit</button>
+    <button type="submit" class="btn btn-primary" >Calculate</button>
 </form>
 {% endblock %}

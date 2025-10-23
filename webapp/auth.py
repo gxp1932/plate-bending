@@ -68,98 +68,132 @@ def register():
 # Minor Route
 @auth.route('/minor', methods=['GET', 'POST'])
 def minor():
+
+    results = None
+    error = None
+
     if request.method == 'POST':
-        # Geometric Input
-        t = float(request.form.get('thickness'))
-        d = float(request.form.get('depth'))
-        Lb = float(request.form.get('length'))
-        e = float(request.form.get('eccentricity'))
-        P_max = float(request.form.get('maxload'))
+        try:
+            # Geometric Input
+            t = float(request.form.get('thickness'))
+            d = float(request.form.get('depth'))
+            Lb = float(request.form.get('length'))
+            e = float(request.form.get('eccentricity'))
+            P_max = float(request.form.get('maxload'))
 
-        # Constants
-        # Yield Strength (ksi)
-        Fy = float(36)
-        # Modulus of Elasticity (ksi)
-        E = float(29000)
-        # Lateral-torsional buckling modification factor
-        Cb = float(1)
+            # Constants
+            # Yield Strength (ksi)
+            Fy = float(36)
+            # Modulus of Elasticity (ksi)
+            E = float(29000)
+            # Lateral-torsional buckling modification factor
+            Cb = float(1)
 
-        # Modulus Calculation
-        Z = float(((d * t * t)) / 4)
-        S = float(((d * t * t)) / 6)
+            # Modulus Calculation
+            Z = float(((d * t * t)) / 4)
+            S = float(((d * t * t)) / 6)
 
-        # Check yielding for rectangular bars bent about minor axis (AISC F11-1)
-        My_1_6 = float((1.6 * Fy * S) / 12)
-        Mp = float((Z * Fy) / 12)
-        Mn = min(Mp, My_1_6)
-
-        # Determine maximum allowable applied load
-        P_all = ((Mn / 1.67) / (e / 12))
-
-        # Bending Strength Unity Check
-        Unity = P_max / P_all
-
-        if Unity <= 1:
-            flash('Analysis Complete: Pass - Strength Unity = ' + str(Unity.__round__(2)), category='message')
-        else:
-            flash('Analysis Complete: Fail - Strength Unity = ' + str(Unity.__round__(2)), category='error')
-
-    return render_template("minor.html", user=current_user)
-
-# Major Route
-@auth.route('/major', methods=['GET', 'POST'])
-def major():
-    if request.method == 'POST':
-        # Geometric Input
-        t = float(request.form.get('thickness'))
-        d = float(request.form.get('depth'))
-        Lb = float(request.form.get('length'))
-        e = float(request.form.get('eccentricity'))
-        P_max = float(request.form.get('maxload'))
-
-        # Constants
-        # Yield Strength (ksi)
-        Fy = float(36)
-        # Modulus of Elasticity (ksi)
-        E = float(29000)
-        # Lateral-torsional buckling modification factor
-        Cb = float(1)
-
-        # Modulus Calculation
-        Z = float(((t * d * d)) / 4)
-        S = float(((t * d * d)) / 6)
-
-        # Check yielding for rectangular bars bent about minor axis (AISC F11-1)
-        print()
-        Lbd_t2 = float(Lb * d) / (t * t)
-        E08_Fy = float((0.08 * E) / Fy)
-        E19_Fy = float((1.9 * E) / Fy)
-        My = float(Fy * S) / 12
-        Mp = float(Fy * Z) / 12
-        if Lbd_t2 <= E08_Fy:
+            # Check yielding for rectangular bars bent about minor axis (AISC F11-1)
             My_1_6 = float((1.6 * Fy * S) / 12)
             Mp = float((Z * Fy) / 12)
             Mn = min(Mp, My_1_6)
 
-        # Check lateral torsional buckling (AISC F11-2)
-        else:
-            if Lbd_t2 <= E19_Fy and E08_Fy < Lbd_t2:
-                Mn = min(float(Cb * (1.52 - 0.274 * (Lbd_t2) * (Fy / E)) * My), Mp)
+            # Determine maximum allowable applied load
+            P_all = ((Mn / 1.67) / (e / 12))
+
+            # Bending Strength Unity Check
+            Unity = P_max / P_all
+            Status = "Pass" if Unity <= 1 else "Fail"
+
+            results = {
+                "Mn": round(Mn, 3),
+                "P_all": round(P_all, 2),
+                "Unity": round(Unity, 2),
+                "Status": Status
+            }
+
+        except (ValueError, ZeroDivisionError):
+            error = "Invalid input: please enter positive numeric values only."
+
+
+        # if Unity <= 1:
+        #     flash('Analysis Complete: Pass - Strength Unity = ' + str(Unity.__round__(2)), category='message')
+        # else:
+        #     flash('Analysis Complete: Fail - Strength Unity = ' + str(Unity.__round__(2)), category='error')
+
+    return render_template("minor.html", user=current_user, results=results, error=error)
+
+# Major Route
+@auth.route('/major', methods=['GET', 'POST'])
+def major():
+
+    results = None
+    error = None
+
+    if request.method == 'POST':
+        try:
+            # Geometric Input
+            t = float(request.form.get('thickness'))
+            d = float(request.form.get('depth'))
+            Lb = float(request.form.get('length'))
+            e = float(request.form.get('eccentricity'))
+            P_max = float(request.form.get('maxload'))
+
+            # Constants
+            # Yield Strength (ksi)
+            Fy = float(36)
+            # Modulus of Elasticity (ksi)
+            E = float(29000)
+            # Lateral-torsional buckling modification factor
+            Cb = float(1)
+
+            # Modulus Calculation
+            Z = float(((t * d * d)) / 4)
+            S = float(((t * d * d)) / 6)
+
+            # Check yielding for rectangular bars bent about minor axis (AISC F11-1)
+            Lbd_t2 = float(Lb * d) / (t * t)
+            E08_Fy = float((0.08 * E) / Fy)
+            E19_Fy = float((1.9 * E) / Fy)
+            My = float(Fy * S) / 12
+            Mp = float(Fy * Z) / 12
+            if Lbd_t2 <= E08_Fy:
+                My_1_6 = float((1.6 * Fy * S) / 12)
+                Mp = float((Z * Fy) / 12)
+                Mn = min(Mp, My_1_6)
+
+            # Check lateral torsional buckling (AISC F11-2)
             else:
-                if E19_Fy < Lbd_t2:
-                    Fcr = float((1.9 * E * Cb) / Lbd_t2)
-                    Mn = min((Fcr * S), Mp)
+                if Lbd_t2 <= E19_Fy and E08_Fy < Lbd_t2:
+                    Mn = min(float(Cb * (1.52 - 0.274 * (Lbd_t2) * (Fy / E)) * My), Mp)
+                else:
+                    if E19_Fy < Lbd_t2:
+                        Fcr = float((1.9 * E * Cb) / Lbd_t2)
+                        Mn = min((Fcr * S), Mp)
 
-        # Determine maximum allowable applied load
-        P_all = float((Mn / 1.67) / (e / 12))
+            # Determine maximum allowable applied load
+            P_all = float((Mn / 1.67) / (e / 12))
 
-        # Bending Strength Unity Check
-        Unity = P_max / P_all
+            # Bending Strength Unity Check
+            Unity = P_max / P_all
+            Status = "Pass" if Unity <= 1 else "Fail"
 
-        if Unity <= 1:
-            flash('Analysis Complete: Pass - Strength Unity = ' + str(Unity.__round__(2)), category='message')
-        else:
-            flash('Analysis Complete: Fail - Strength Unity = ' + str(Unity.__round__(2)), category='error')
+            results = {
+                "Mn": round(Mn, 3),
+                "P_all": round(P_all, 2),
+                "Unity": round(Unity, 2),
+                "Status": Status
+            }
 
-    return render_template("major.html", user=current_user)
+        except (ValueError, ZeroDivisionError):
+            error = "Invalid input: please enter positive numeric values only."
+
+        #
+        # if Unity <= 1:
+        #     flash('Analysis Complete: Pass - Strength Unity = ' + str(Unity.__round__(2)), category='message')
+        # else:
+        #     flash('Analysis Complete: Fail - Strength Unity = ' + str(Unity.__round__(2)), category='error')
+        #
+
+    return render_template("major.html",user=current_user, results=results, error=error)
 
